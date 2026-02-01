@@ -1,0 +1,101 @@
+# ===========================================
+# Development Profile Configuration
+# ===========================================
+
+spring:
+  # ===========================================
+  # Database Configuration (Dev)
+  # ===========================================
+  datasource:
+    url: jdbc:mysql://localhost:3306/portfolio_db?createDatabaseIfNotExist=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: root
+    password: 
+
+  # ===========================================
+  # JPA / Hibernate Configuration (Dev)
+  # ===========================================
+  jpa:
+    hibernate:
+      ddl-auto: update # Auto-create/update tables in dev
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true
+
+  # ===========================================
+  # Mail Configuration (Dev - Disabled)
+  # ===========================================
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dev@example.com
+    password: dev-password
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# ===========================================
+# Server Configuration (Dev)
+# ===========================================
+server:
+  port: 8080
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-stacktrace: always # Full stacktrace in dev
+    include-exception: true
+
+# ===========================================
+# JWT Configuration (Dev)
+# ===========================================
+jwt:
+  secret: dev-secret-key-for-development-only-not-for-production-use
+  expiration: 86400000 # 24 hours
+
+# ===========================================
+# Application Configuration (Dev)
+# ===========================================
+app:
+  contact:
+    email: dev@portfolio.com
+
+# ===========================================
+# Logging Configuration (Dev)
+# ===========================================
+logging:
+  level:
+    root: INFO
+    com.portfolio.backend: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss}){faint} %clr(%5p) %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n%wEx"
+
+# ===========================================
+# Actuator Configuration (Dev - All enabled)
+# ===========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # All endpoints in dev
+  endpoint:
+    health:
+      show-details: always
+
+# ===========================================
+# Swagger/OpenAPI Configuration (Dev)
+# ===========================================
+springdoc:
+  swagger-ui:
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+  api-docs:
+    enabled: true

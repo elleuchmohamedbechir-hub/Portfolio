@@ -1,0 +1,122 @@
+# ===========================================
+# Production Profile Configuration
+# ===========================================
+
+spring:
+  # ===========================================
+  # Database Configuration (Prod)
+  # ===========================================
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/portfolio_db}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  # ===========================================
+  # JPA / Hibernate Configuration (Prod)
+  # ===========================================
+  jpa:
+    hibernate:
+      ddl-auto: validate # Never auto-create in production
+    show-sql: false # Disable SQL logging in production
+    properties:
+      hibernate:
+        format_sql: false
+        use_sql_comments: false
+
+  # ===========================================
+  # Mail Configuration (Prod)
+  # ===========================================
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+# ===========================================
+# Server Configuration (Prod)
+# ===========================================
+server:
+  port: ${PORT:8080}
+  error:
+    include-message: never # Don't expose error messages
+    include-binding-errors: never
+    include-stacktrace: never # Never show stacktrace in production
+    include-exception: false
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  http2:
+    enabled: true
+  servlet:
+    session:
+      cookie:
+        secure: true
+        http-only: true
+        same-site: strict
+
+# ===========================================
+# JWT Configuration (Prod)
+# ===========================================
+jwt:
+  secret: ${JWT_SECRET} # MUST be set via environment variable
+  expiration: 86400000 # 24 hours
+
+# ===========================================
+# Application Configuration (Prod)
+# ===========================================
+app:
+  contact:
+    email: ${CONTACT_EMAIL:elleuchmohamedbechir@gmail.com}
+
+# ===========================================
+# Logging Configuration (Prod)
+# ===========================================
+logging:
+  level:
+    root: WARN
+    com.portfolio.backend: INFO
+    org.springframework.web: WARN
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  file:
+    name: /var/log/portfolio-backend/application.log
+    max-size: 50MB
+    max-history: 90
+
+# ===========================================
+# Actuator Configuration (Prod - Restricted)
+# ===========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info # Only essential endpoints
+  endpoint:
+    health:
+      show-details: never # Don't expose health details publicly
+
+# ===========================================
+# Swagger/OpenAPI Configuration (Prod - Disabled)
+# ===========================================
+springdoc:
+  swagger-ui:
+    enabled: false # Disable Swagger UI in production
+  api-docs:
+    enabled: false # Disable API docs in production
+
+

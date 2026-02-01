@@ -1,0 +1,113 @@
+# ===========================================
+# Java / Maven
+# ===========================================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ===========================================
+# IDE
+# ===========================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# VS Code
+.vscode/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ===========================================
+# Environment & Secrets
+# ===========================================
+.env
+.env.local
+.env.*.local
+*.env
+
+# ===========================================
+# Logs
+# ===========================================
+logs/
+*.log
+*.log.*
+
+# ===========================================
+# OS
+# ===========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+
+# ===========================================
+# Application
+# ===========================================
+# Uploaded files
+uploads/
+files/
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# ===========================================
+# Database
+# ===========================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ===========================================
+# Security
+# ===========================================
+# SSL certificates
+*.p12
+*.jks
+*.keystore
+
+# ===========================================
+# Build artifacts
+# ===========================================
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# ===========================================
+# Testing
+# ===========================================
+coverage/
+.nyc_output/

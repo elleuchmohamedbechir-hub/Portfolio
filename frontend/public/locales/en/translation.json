@@ -1,0 +1,102 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About",
+        "skills": "Skills",
+        "projects": "Projects",
+        "experience": "Experience",
+        "contact": "Contact",
+        "admin": "Admin",
+        "login": "Login",
+        "logout": "Logout"
+    },
+    "hero": {
+        "greeting": "Hi, I am",
+        "role": "Full Stack Developer",
+        "description": "I build modern, performant, and scalable web applications.",
+        "viewProjects": "View My Projects",
+        "contactMe": "Contact Me"
+    },
+    "about": {
+        "title": "About Me",
+        "downloadCv": "Download CV",
+        "yearsExperience": "Years Experience",
+        "education": "Education",
+        "degree": "Degree in CS",
+        "freelance": "Freelance",
+        "available": "Available for projects",
+        "defaultTitle": "Full-Stack Developer",
+        "defaultDescription": "Welcome to my portfolio! I am a passionate developer dedicated to creating innovative solutions and delivering high-quality web applications. With expertise in modern technologies, I strive to build experiences that are not only functional but also visually stunning."
+    },
+    "skills": {
+        "title": "My Skills",
+        "technical": "Technical",
+        "soft": "Soft Skills"
+    },
+    "projects": {
+        "title": "Recent Projects",
+        "viewMore": "View More",
+        "demo": "Live Demo",
+        "github": "Source Code"
+    },
+    "experience": {
+        "title": "Work Experience",
+        "education": "Education",
+        "present": "Present"
+    },
+    "contact": {
+        "title": "Get In Touch",
+        "subtitle": "Have a project in mind? Let's work together!",
+        "connectTitle": "Let's Connect",
+        "connectText": "I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision. Feel free to reach out!",
+        "name": "Your Name",
+        "email": "Your Email",
+        "subject": "Subject",
+        "message": "Message",
+        "send": "Send Message",
+        "sending": "Sending...",
+        "success": "Message sent successfully! I'll get back to you soon.",
+        "error": "Failed to send message. Please try again.",
+        "validation": {
+            "nameRequired": "Name is required",
+            "emailRequired": "Email is required",
+            "emailInvalid": "Invalid email address",
+            "subjectRequired": "Subject is required",
+            "messageRequired": "Message is required",
+            "messageMin": "Message must be at least 10 characters"
+        },
+        "placeholder": {
+            "name": "John Doe",
+            "email": "john@example.com",
+            "subject": "Project Inquiry",
+            "message": "Tell me about your project..."
+        },
+        "social": {
+            "connect": "Connect on LinkedIn",
+            "viewGithub": "View GitHub Profile"
+        }
+    },
+    "admin": {
+        "dashboard": "Dashboard",
+        "projects": "Manage Projects",
+        "skills": "Manage Skills",
+        "messages": "Messages",
+        "settings": "Settings",
+        "backToHome": "Back to Home"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "retry": "Retry",
+        "noData": "No data available"
+    },
+    "footer": {
+        "description": "Thank you for visiting my personal portfolio. Feel free to connect with me on social media or reach out via the contact form.",
+        "quickLinks": "Quick Links",
+        "languages": "Languages",
+        "interests": "Interests",
+        "backToTop": "Back to Top",
+        "rights": "All rights reserved.",
+        "builtWith": "Built with"
+    }
+}

@@ -1,0 +1,102 @@
+{
+    "nav": {
+        "home": "Accueil",
+        "about": "À Propos",
+        "skills": "Compétences",
+        "projects": "Projets",
+        "experience": "Expérience",
+        "contact": "Contact",
+        "admin": "Admin",
+        "login": "Connexion",
+        "logout": "Déconnexion"
+    },
+    "hero": {
+        "greeting": "Bonjour, je suis",
+        "role": "Développeur Full Stack",
+        "description": "Je construis des applications web modernes, performantes et évolutives.",
+        "viewProjects": "Voir mes projets",
+        "contactMe": "Me contacter"
+    },
+    "about": {
+        "title": "À Propos de Moi",
+        "downloadCv": "Télécharger CV",
+        "yearsExperience": "Années d'expérience",
+        "education": "Formation",
+        "degree": "Diplôme en Informatique",
+        "freelance": "Freelance",
+        "available": "Disponible pour projets",
+        "defaultTitle": "Développeur Full Stack",
+        "defaultDescription": "Bienvenue sur mon portfolio ! Je suis un développeur passionné dédié à la création de solutions innovantes et à la livraison d'applications web de haute qualité. Avec une expertise dans les technologies modernes, je m'efforce de construire des expériences non seulement fonctionnelles mais aussi visuellement époustouflantes."
+    },
+    "skills": {
+        "title": "Mes Compétences",
+        "technical": "Techniques",
+        "soft": "Humaines"
+    },
+    "projects": {
+        "title": "Projets Récents",
+        "viewMore": "Voir plus",
+        "demo": "Démo Live",
+        "github": "Code Source"
+    },
+    "experience": {
+        "title": "Expérience Professionnelle",
+        "education": "Formation",
+        "present": "Présent"
+    },
+    "contact": {
+        "title": "Me Contacter",
+        "subtitle": "Vous avez un projet en tête ? Travaillons ensemble !",
+        "connectTitle": "Restons en contact",
+        "connectText": "Je suis toujours ouvert à discuter de nouveaux projets, d'idées créatives ou d'opportunités. N'hésitez pas à me contacter !",
+        "name": "Votre Nom",
+        "email": "Votre Email",
+        "subject": "Sujet",
+        "message": "Message",
+        "send": "Envoyer",
+        "sending": "Envoi en cours...",
+        "success": "Message envoyé avec succès ! Je vous répondrai bientôt.",
+        "error": "Échec de l'envoi du message. Veuillez réessayer.",
+        "validation": {
+            "nameRequired": "Le nom est requis",
+            "emailRequired": "L'email est requis",
+            "emailInvalid": "Adresse email invalide",
+            "subjectRequired": "Le sujet est requis",
+            "messageRequired": "Le message est requis",
+            "messageMin": "Le message doit contenir au moins 10 caractères"
+        },
+        "placeholder": {
+            "name": "Jean Dupont",
+            "email": "jean@exemple.com",
+            "subject": "Demande de projet",
+            "message": "Parlez-moi de votre projet..."
+        },
+        "social": {
+            "connect": "Me suivre sur LinkedIn",
+            "viewGithub": "Voir mon GitHub"
+        }
+    },
+    "admin": {
+        "dashboard": "Tableau de Bord",
+        "projects": "Gestion Projets",
+        "skills": "Gestion Compétences",
+        "messages": "Messages",
+        "settings": "Paramètres",
+        "backToHome": "Retour au site"
+    },
+    "common": {
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "retry": "Réessayer",
+        "noData": "Aucune donnée disponible"
+    },
+    "footer": {
+        "description": "Merci de visiter mon portfolio personnel. N'hésitez pas à me contacter sur les réseaux sociaux ou via le formulaire de contact.",
+        "quickLinks": "Liens Rapides",
+        "languages": "Langues",
+        "interests": "Centres d'intérêt",
+        "backToTop": "Haut de page",
+        "rights": "Tous droits réservés.",
+        "builtWith": "Créé avec"
+    }
+}
