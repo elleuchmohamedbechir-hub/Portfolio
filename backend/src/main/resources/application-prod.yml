@@ -22,7 +22,7 @@ spring:
   # ===========================================
   jpa:
     hibernate:
-      ddl-auto: validate # Never auto-create in production
+      ddl-auto: update # safer for initial deployment
     show-sql: false # Disable SQL logging in production
     properties:
       hibernate:
@@ -86,17 +86,14 @@ app:
 # ===========================================
 logging:
   level:
-    root: WARN
+    root: INFO
     com.portfolio.backend: INFO
     org.springframework.web: WARN
     org.springframework.security: WARN
     org.hibernate.SQL: WARN
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: /var/log/portfolio-backend/application.log
-    max-size: 50MB
-    max-history: 90
+
 
 # ===========================================
 # Actuator Configuration (Prod - Restricted)

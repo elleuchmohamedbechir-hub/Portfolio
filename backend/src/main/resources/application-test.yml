@@ -1,0 +1,58 @@
+# ===========================================
+# Test Profile Configuration
+# ===========================================
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  # ===========================================
+  # Database Configuration (Test)
+  # ===========================================
+  datasource:
+    url: ${DATABASE_URL:jdbc:mysql://localhost:3306/portfolio_db_test?allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DATABASE_USERNAME:root}
+    password: ${DATABASE_PASSWORD:test_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  # ===========================================
+  # JPA / Hibernate Configuration (Test)
+  # ===========================================
+  jpa:
+    hibernate:
+      ddl-auto: create-drop # Re-create DB for every test run
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+
+  # ===========================================
+  # Mail Configuration (Test - Mock)
+  # ===========================================
+  mail:
+    host: localhost
+    port: 3025
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: false
+          starttls:
+            enable: false
+
+# ===========================================
+# Security Configuration (Test)
+# ===========================================
+jwt:
+  secret: test-jwt-secret-key-for-ci-cd-pipeline-testing-only-must-be-long-enough
+  expiration: 3600000
+
+# ===========================================
+# Logging
+# ===========================================
+logging:
+  level:
+    root: INFO
+    com.portfolio.backend: DEBUG
