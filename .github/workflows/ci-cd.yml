@@ -147,6 +147,9 @@ jobs:
     name: Security Scan
     runs-on: ubuntu-latest
     needs: [backend-build, frontend-build]
+    permissions:
+      contents: read
+      security-events: write
     
     steps:
       - name: 📥 Checkout Repository
@@ -160,6 +163,13 @@ jobs:
           format: 'sarif'
           output: 'trivy-backend-results.sarif'
       
+      - name: 📤 Upload Backend Security Results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && github.event.pull_request.head.repo.fork == false
+        with:
+          sarif_file: 'trivy-backend-results.sarif'
+          category: trivy-backend
+      
       - name: 🔒 Run Trivy Security Scanner (Frontend)
         uses: aquasecurity/trivy-action@master
         with:
@@ -168,11 +178,12 @@ jobs:
           format: 'sarif'
           output: 'trivy-frontend-results.sarif'
       
-      - name: 📤 Upload Security Results
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
+      - name: 📤 Upload Frontend Security Results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && github.event.pull_request.head.repo.fork == false
         with:
-          sarif_file: '.'
+          sarif_file: 'trivy-frontend-results.sarif'
+          category: trivy-frontend
 
   # ==========================================
   # Code Quality Check
