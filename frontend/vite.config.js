@@ -46,13 +46,7 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: mode !== 'production', // Only generate sourcemaps in dev
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: mode === 'production', // Remove console.logs in production
-          drop_debugger: true,
-        },
-      },
+      minify: mode === 'production', // Enable minification in production
       rollupOptions: {
         output: {
           manualChunks: {
