@@ -1,0 +1,244 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
+  workflow_dispatch:
+
+env:
+  JAVA_VERSION: '17'
+  NODE_VERSION: '18'
+  MYSQL_VERSION: '8.0'
+
+jobs:
+  # ==========================================
+  # Backend Build & Test
+  # ==========================================
+  backend-build:
+    name: Backend - Build & Test
+    runs-on: ubuntu-latest
+    
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: test_password
+          MYSQL_DATABASE: portfolio_db_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: ☕ Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+      
+      - name: 🔍 Verify Maven Installation
+        run: mvn --version
+        working-directory: ./backend
+      
+      - name: 🏗️ Build with Maven
+        run: mvn clean install -DskipTests
+        working-directory: ./backend
+        env:
+          SPRING_PROFILES_ACTIVE: test
+      
+      - name: 🧪 Run Tests
+        run: mvn test
+        working-directory: ./backend
+        env:
+          SPRING_PROFILES_ACTIVE: test
+          DATABASE_URL: jdbc:mysql://localhost:3306/portfolio_db_test
+          DATABASE_USERNAME: root
+          DATABASE_PASSWORD: test_password
+          JWT_SECRET: test-jwt-secret-key-for-ci-cd-pipeline-testing-only
+      
+      - name: 🔍 Check for Test Reports
+        id: check_reports
+        run: |
+          if ls backend/target/surefire-reports/*.xml 1> /dev/null 2>&1; then
+            echo "has_reports=true" >> $GITHUB_OUTPUT
+            echo "✅ Test reports found."
+          else
+            echo "has_reports=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No test reports found. Skipping report generation."
+          fi
+
+      - name: 📊 Generate Test Report
+        if: always() && steps.check_reports.outputs.has_reports == 'true'
+        uses: dorny/test-reporter@v1
+        with:
+          name: Backend Test Results
+          path: backend/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: false
+      
+      - name: 📦 Upload Backend Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/target/*.jar
+          retention-days: 7
+
+  # ==========================================
+  # Frontend Build & Test
+  # ==========================================
+  frontend-build:
+    name: Frontend - Build & Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Set up Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: 📦 Install Dependencies
+        run: npm ci
+        working-directory: ./frontend
+      
+      - name: 🔍 Run ESLint
+        run: npm run lint
+        working-directory: ./frontend
+        continue-on-error: true
+      
+      - name: 🏗️ Build Production Bundle
+        run: npm run build
+        working-directory: ./frontend
+        env:
+          VITE_API_BASE_URL: /api
+      
+      - name: 📊 Check Build Size
+        run: |
+          echo "## Build Size Report" >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+          du -sh dist >> $GITHUB_STEP_SUMMARY
+          echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        working-directory: ./frontend
+      
+      - name: 📦 Upload Frontend Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist
+          path: frontend/dist
+          retention-days: 7
+
+  # ==========================================
+  # Security Scan
+  # ==========================================
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: [backend-build, frontend-build]
+    permissions:
+      contents: read
+      security-events: write
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: 🔒 Run Trivy Security Scanner (Backend)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './backend'
+          format: 'sarif'
+          output: 'trivy-backend-results.sarif'
+      
+      - name: 📤 Upload Backend Security Results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && github.event.pull_request.head.repo.fork == false
+        with:
+          sarif_file: 'trivy-backend-results.sarif'
+          category: trivy-backend
+      
+      - name: 🔒 Run Trivy Security Scanner (Frontend)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: './frontend'
+          format: 'sarif'
+          output: 'trivy-frontend-results.sarif'
+      
+      - name: 📤 Upload Frontend Security Results
+        uses: github/codeql-action/upload-sarif@v4
+        if: always() && github.event.pull_request.head.repo.fork == false
+        with:
+          sarif_file: 'trivy-frontend-results.sarif'
+          category: trivy-frontend
+
+  # ==========================================
+  # Code Quality Check
+  # ==========================================
+  code-quality:
+    name: Code Quality Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for better analysis
+      
+      - name: ☕ Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+      
+      - name: 📊 Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      
+      # Uncomment when SonarCloud is configured
+      # - name: 🔍 SonarCloud Scan
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+      #   working-directory: ./backend
+
+  # ==========================================
+  # Build Summary
+  # ==========================================
+  build-summary:
+    name: Build Summary
+    runs-on: ubuntu-latest
+    needs: [backend-build, frontend-build]
+    if: always()
+    
+    steps:
+      - name: 📋 Generate Build Summary
+        run: |
+          echo "# 🚀 Build Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Status" >> $GITHUB_STEP_SUMMARY
+          echo "- **Backend Build**: ${{ needs.backend-build.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Frontend Build**: ${{ needs.frontend-build.result }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Details" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Author**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Workflow**: ${{ github.workflow }}" >> $GITHUB_STEP_SUMMARY
